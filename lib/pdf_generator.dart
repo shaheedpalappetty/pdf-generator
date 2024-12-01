@@ -1,4 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
@@ -8,7 +11,15 @@ Future<void> saveAndLaunchPrescriptionPDF() async {
   // Load Logo Image
   // final logoData = await rootBundle.load('assets/images/Logo.svg');
   // final logo = pdf.MemoryImage(logoData.buffer.asUint8List());
-
+  final ByteData image = await rootBundle.load('assets/images/Logo.png');
+// final pdf.Image svgImage = pdf.Image(
+//   pdf.MemoryImage(
+//     svg.toPicture().toBytes(),
+//   ),
+//   width: 60,
+//   height: 70,
+//   fit: pdf.BoxFit.cover,
+// );
   // Create PDF document
   const String fileName = "Prescription.pdf";
   final document = pdf.Document();
@@ -40,11 +51,16 @@ Future<void> saveAndLaunchPrescriptionPDF() async {
           pdf.Container(
             padding:
                 const pdf.EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            color: PdfColors.deepPurple,
+            color: const PdfColor(0.1725, 0.1137, 0.3804),
             child: pdf.Row(
               mainAxisAlignment: pdf.MainAxisAlignment.spaceBetween,
               children: [
-                // pdf.Image(logo, height: 40),
+                pdf.Image(
+                  fit: pdf.BoxFit.cover,
+                  pdf.MemoryImage(
+                    image.buffer.asUint8List(),
+                  ),
+                ),
                 pdf.Text("PRESCRIPTION",
                     style: pdf.TextStyle(
                       fontSize: 18,
@@ -138,6 +154,8 @@ Future<void> saveAndLaunchPrescriptionPDF() async {
                 pdf.Text("Follow Up Date: 02/11/24",
                     style: pdf.TextStyle(fontWeight: pdf.FontWeight.bold)),
               ])),
+          pdf.Divider(
+              thickness: 3, color: const PdfColor(0.1725, 0.1137, 0.3804))
         ],
       ),
     ),
