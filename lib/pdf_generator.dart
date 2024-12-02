@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pdf;
 
-Future<void> saveAndLaunchPrescriptionPDF() async {
+Future<String> saveAndLaunchPrescriptionPDF() async {
   // Load Logo Image
   // final logoData = await rootBundle.load('assets/images/Logo.svg');
   // final logo = pdf.MemoryImage(logoData.buffer.asUint8List());
@@ -170,6 +170,7 @@ Future<void> saveAndLaunchPrescriptionPDF() async {
 
   // Open the PDF file
   OpenFile.open(file.path);
+  return file.path;
 }
 
 // Helper method to create patient detail Column
